@@ -23,14 +23,20 @@ module.exports = async function handler(req, res) {
     const signature = makeSignature(timestamp, 'GET', '/keywordstool', secretKey);
 
     const kwList = Array.isArray(keywords) ? keywords : [keywords];
-    // 쉼표로 구분된 단일 파라미터로 전달
-    const hintKeywords = kwList.join(',');
-    const url = `https://api.naver.com/keywordstool?hintKeywords=${encodeURIComponent(hintKeywords)}&showDetail=1`;
-
+    
+    // 키워드 하나씩 별도 파라미터로 전달
+    const params = new URLSearchParams();
+    kwList.slice(0, 5).forEach(k => {
+      const clean = k.trim().replace(/['"]/g, '');
+      if (clean) params.append('hintKeywords', clean);
+    });
+    params.append('showDetail', '1');
+    
+    const url = `https://api.naver.com/keywordstool?${params.toString()}`;
     console.log('요청 URL:', url);
-    console.log('키워드:', hintKeywords);
 
     const response = await fetch(url, {
+      method: 'GET',
       headers: {
         'X-Timestamp': timestamp,
         'X-API-KEY': license,
