@@ -24,10 +24,10 @@ module.exports = async function handler(req, res) {
 
     const kwList = Array.isArray(keywords) ? keywords : [keywords];
     
-    // 키워드 하나씩 별도 파라미터로 전달
     const params = new URLSearchParams();
     kwList.slice(0, 5).forEach(k => {
-      const clean = k.trim().replace(/['"]/g, '');
+      // 띄어쓰기 완전 제거
+      const clean = k.trim().replace(/\s+/g, '').replace(/['"]/g, '');
       if (clean) params.append('hintKeywords', clean);
     });
     params.append('showDetail', '1');
