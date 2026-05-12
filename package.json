@@ -1,0 +1,6 @@
+{
+  "name": "dino-keyword-server",
+  "version": "1.0.0",
+  "description": "디노마케팅 황금키워드 서버",
+  "main": "index.js"
+}
